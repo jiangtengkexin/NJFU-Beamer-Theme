@@ -1,0 +1,104 @@
+%Beamer文档类中的幻灯片模式（presentation mode）设置
+\mode<presentation>%声明当前文档处于幻灯片演示模式下。
+
+\newif\ifbeamer@secheader%创建一个名为beamer@secheader的新开关，表示是否显示小节标题。
+\beamer@secheaderfalse%将beamer@secheader开关设置为关闭状态，即不显示小节标题栏。
+
+%Beamer文档类中的选项处理
+%\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}%声明了一个名为secheader的Beamer选项，并设置其对应的值为\beamer@secheadertrue
+\ProcessOptionsBeamer%处理导入Beamer主题时传递的选项，并将它们应用于文档。如果前面定义了某些选项，这里的代码会检查是否有相应选项被传递，然后根据选项的值来执行相应的操作。
+
+\useoutertheme[footline=authorinstitutetitle,subsection=false]{smoothbars}%导入了一个名为smoothbars的外部主题，footline=authorinstitutetitle 表示在每个幻灯片的底部加入作者和机构信息，subsection=false 表示不显示小节信息。
+\makeatletter %这是一个特殊的命令，将@字符变成了字母，使得我们可以使用一些原本受到保护的命令。
+% [add curpage/total page at the bottom](http://tex.stackexchange.com/questions/100838/beamer-dresden-theme-miniframes-appeareance-and-frame-number-insertion)
+
+%Beamer主题中的幻灯片页脚样式。
+\newcommand{\frameofframes}{/}%定义了一个名为frameofframes的新命令，其默认值为 /。
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}%定义了一个名为setframeofframes的新命令，用于重新定义frameofframes命令的值。
+\setbeamertemplate{footline} %修改后的 footline 模板中，使用了三个 beamercolorbox 环境，分别是：upper separation line foot：上部分隔线；author in head/foot：作者和机构信息；title in head/foot：标题和页码信息。
+  {%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}%开始了一个名为 upper separation line foot 的 beamercolorbox 环境，用于添加位于幻灯片页脚顶部的分隔线。
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%开始了一个名为 author in head/foot 的新 beamercolorbox 环境，用于添加作者和机构信息。其中：ht=2.5ex：指定该 beamercolorbox 的高度为 2.5ex。dp=1.125ex：指定该 beamercolorbox 的深度为 1.125ex。leftskip=.3cm 和 rightskip=.3cm plus1fil：分别指定该 beamercolorbox 左右两侧的空白大小。
+      \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%将插入当前帧作者的缩略形式。
+      \hfill%占据一定的空白，使得下一个元素位于 beamercolorbox 环境的右侧。
+      {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%将插入当前帧机构的缩略形式，且使用了指定的颜色和字体。
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%开始了一个名为 title in head/foot 的新 beamercolorbox 环境，用于添加幻灯片标题和页码信息。其中：ht=2.5ex：指定该 beamercolorbox 的高度为 2.5ex。dp=1.125ex：指定该 beamercolorbox 的深度为 1.125ex。leftskip=.3cm 和 rightskip=.3cm plus1fil：分别指定该 beamercolorbox 左右两侧的空白大小。
+      {\usebeamerfont{title in head/foot}\insertshorttitle}%将插入当前帧标题的缩略形式。
+      \hfill%
+      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}%将插入当前帧的页码信息，并使用了自定义的字体和颜色。其中，\insertframenumber 插入当前帧序号，\frameofframes 是之前定义的自定义分隔符，\inserttotalframenumber 插入总帧数。
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}%开始了一个名为 lower separation line foot 的新 beamercolorbox 环境，用于添加位于幻灯片页脚底部的分隔线。
+    \end{beamercolorbox}
+  }
+\makeatother%将之前使用 \makeatletter 命令将 @ 字符变成字母的设置还原。
+
+\useinnertheme[shadow=false]{rounded}%指定内部主题为 rounded，即使用圆角矩形的装饰元素来美化幻灯片中的标题、列表项和块等，并关闭阴影效果。
+\useinnertheme{circles}%使用圆形装饰元素来美化幻灯片中的标题、列表项和块等。
+%\useoutertheme{default}%默认情况下，Beamer使用 default 外部主题，该主题在幻灯片页边缘提供了简单的装饰元素。
+
+
+
+%Beamer主题的颜色和样式的自定义设置
+\xdefinecolor{njfu}{RGB}{0, 112, 81}  %RGB#006F50  %定义了一个名为 njfu 的新颜色，其 RGB 值为 (0, 112, 81)
+\setbeamercolor{footline}{bg=njfu}%设定了 footline 部分的背景颜色为之前定义的 njfu
+\setbeamercolor{frametitle}{bg=njfu,fg=white}%设定了 frametitle 部分的背景颜色为紫色，并将字体颜色设为白色，用于增加对比度。
+\setbeamercolor{title}{bg=njfu}%设定了 title 部分的背景颜色也为紫色。
+\setbeamerfont{frametitle}{size=\large}%设置 frametitle 部分的字体大小为 \large
+%\setbeamertemplate{navigation symbols}{}%在幻灯片底部显示导航按钮。
+\setbeamertemplate{bibliography item}[text]%将参考文献中的标志由默认的符号（如圆点）改为文本格式。
+\setbeamertemplate{caption}[numbered]%将图片等元素的标题设置为带有编号的格式，即加上序号的形式，并在参考文献中显示编号。
+
+
+%Beamer主题中调色板的自定义设置
+\setbeamercolor{palette primary}{use=structure,fg=white,bg=structure.fg}%设定了主色调色板 palette primary 中使用当前主题颜色 (structure) 作为背景颜色，字体颜色为白色。
+\setbeamercolor{palette secondary}{use=structure,fg=white,bg=structure.fg!75!black}%设定了第二调色板 palette secondary。其使用当前主题颜色混合黑色 (structure.fg!75!black) 作为背景颜色，字体颜色为白色。
+\setbeamercolor{palette tertiary}{use=structure,fg=white,bg=structure.fg!50!black}%设定了第三调色板 palette tertiary。其使用当前主题颜色混合黑色 (structure.fg!50!black) 作为背景颜色，字体颜色为白色。
+\setbeamercolor{palette quaternary}{fg=white,bg=structure.fg!50!black}%设定了第四调色板 palette quaternary。其中文字颜色为白色，背景颜色为当前主题颜色混合黑色 (structure.fg!50!black)。
+%\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}%使用当前主题颜色作为侧边栏的背景色。
+\setbeamercolor{titlelike}{parent=palette primary}%设定了标题 titlelike 部分使用调色板 palette primary 的颜色。
+
+
+%Beamer主题中调色板的详细设置
+%% try
+\setbeamercolor{block title}{bg=njfu,fg=white}%设定了块标题的颜色，背景色为 njfu，字体颜色为白色。
+\setbeamercolor*{block title example}{use={normal text,example text},bg=white,fg=njfu}%设定了示例块的标题颜色。使用了两种颜色：一种是 normal text，用于普通文本的颜色；另一种是 example text，用于示例文本的颜色。背景色为白色，字体颜色为 njfu。
+\setbeamercolor{fine separation line}{}%设定了细分割线的颜色为空。
+\setbeamercolor{item projected}{fg=white}%设定了选中条目的文本颜色为白色。
+\setbeamercolor{palette sidebar primary}{use=normal text,fg=normal text.fg}%设定了侧边栏主色调色板，使用普通文本的颜色作为字体颜色。
+\setbeamercolor{palette sidebar quaternary}{use=structure,fg=structure.fg}%设定了侧边栏第四调色板，使用当前主题颜色的字体颜色。
+\setbeamercolor{palette sidebar secondary}{use=structure,fg=structure.fg}%设定了侧边栏第二调色板，使用当前主题颜色的字体颜色。
+\setbeamercolor{palette sidebar tertiary}{use=normal text,fg=normal text.fg}%设定了侧边栏第三调色板，使用普通文本的颜色作为字体颜色。
+%\setbeamercolor{palette sidebar quaternary}{fg=white}%设定了侧边栏第三调色板，字体颜色为白色
+\setbeamercolor{section in sidebar}{fg=brown}%设定了侧边栏中章节标题的颜色为棕色。
+\setbeamercolor{section in sidebar shaded}{fg=grey}%设定了不活动章节标题的颜色为灰色。
+\setbeamercolor{separation line}{}%设定了分割线的颜色为空。
+\setbeamercolor{sidebar}{bg=njfu}%设定了侧边栏的背景色为 njfu。
+\setbeamercolor{sidebar}{parent=palette primary}%设定了侧边栏的主色调色板和正文部分使用相同的颜色。
+\setbeamercolor{structure}{fg=njfu}%设定了结构元素的颜色为 njfu。
+\setbeamercolor{subsection in sidebar}{fg=brown}%设定了侧边栏中子章节标题的颜色为棕色。
+\setbeamercolor{subsection in sidebar shaded}{fg=grey}% 设定了侧边栏中不活动子章节标题的颜色为灰色。
+
+
+%在Beamer中的每个章节和子章节开始时自动创建一个带有目录的页面
+%\AtBeginSection[]{} 和 \AtBeginSubsection[]{} 两个命令用于设置章节和子章节的开始时会执行的操作，其中 [] 中的内容表示要监听的章节或子章节的标题。
+%在 \begin{frame} 和 \end{frame} 之间的代码设置了在章节或子章节开始时自动生成的页面的内容。其中使用了 \tableofcontents 命令来生成目录，设置了三个样式参数：
+%sectionstyle=show/shaded 表示显示当前章节的标题并将其高亮显示（未选中条目部分灰色）。
+%subsectionstyle=show/shaded/hide 表示显示当前章节下的子章节标题并将其高亮显示，非当前子章节的标题会被淡化显示，未选中条目则被隐藏。
+%subsubsectionstyle=show/shaded/hide 表示显示当前子章节下的子子章节标题并将其高亮显示，非当前子子章节的标题会被淡化显示，未选中条目则被隐藏。
+\AtBeginSection[]{
+	\begin{frame}
+		\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+	\end{frame}
+}
+\AtBeginSubsection[]{
+	\begin{frame}
+		\tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+	\end{frame}
+}
+
+\mode
+<all>
